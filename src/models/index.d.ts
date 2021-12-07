@@ -11,6 +11,7 @@ type PostMetaData = {
 export declare class Post {
   readonly id: string;
   readonly content: string;
+  readonly ptnum?: string;
   readonly createdAt?: string;
   readonly updatedAt?: string;
   constructor(init: ModelInit<Post, PostMetaData>);
