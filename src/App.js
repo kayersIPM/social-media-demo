@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 import './App.css';
 import LoginButton from './LoginButton';
 import LoginPopup from './LoginPopup';
+import ProfileView from './ProfileView';
 import { AuthState } from '@aws-amplify/ui-components';
 
 function App() {
@@ -48,18 +49,22 @@ function App() {
             await Auth.signOut()
             checkLoginState()
           }} />
-        <button onClick={() => {
-          DataStore.save(new Post({
-            content: window.prompt('New post:')
-          }))
-        }}>
-          📝 Add a new post
-        </button>
+        {currentUser &&
+          // <button onClick={() => {
+          //   DataStore.save(new Post({
+          //     content: window.prompt('New post:')
+          //   }))
+          // }}>
+          //   ? Add a new post
+          // </button>
+          <ProfileView currentUser={currentUser}/>
+        }
       </nav>
+      { currentUser && 
       <div className="posts">
-        <h1>Posts</h1>
+        <h1>Total Charge Due</h1>
         {posts.map(post => <PostView post={post} currentUser={currentUser}/>)}
-      </div>
+      </div> }
       {showAuthenticator && 
         <LoginPopup
         onAuthStateChange={(nextAuthState) => { if (nextAuthState === AuthState.SignedIn) { checkLoginState() } }}

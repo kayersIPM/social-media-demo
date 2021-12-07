@@ -1,33 +1,15 @@
 {
-  "dev": {
+  "devx": {
     "awscloudformation": {
-      "AuthRoleName": "amplify-socialmediademo-dev-144551-authRole",
-      "UnauthRoleArn": "arn:aws:iam::691460774223:role/amplify-socialmediademo-dev-144551-unauthRole",
-      "AuthRoleArn": "arn:aws:iam::691460774223:role/amplify-socialmediademo-dev-144551-authRole",
-      "Region": "us-east-1",
-      "DeploymentBucketName": "amplify-socialmediademo-dev-144551-deployment",
-      "UnauthRoleName": "amplify-socialmediademo-dev-144551-unauthRole",
-      "StackName": "amplify-socialmediademo-dev-144551",
-      "StackId": "arn:aws:cloudformation:us-east-1:691460774223:stack/amplify-socialmediademo-dev-144551/b4da9ce0-df6c-11eb-9476-0ee12c5d9039",
-      "AmplifyAppId": "d1wy4wywmb7wut"
-    },
-    "categories": {
-      "auth": {
-        "socialmediademo0881b347": {}
-      }
-    }
-  },
-  "final": {
-    "awscloudformation": {
-      "AuthRoleName": "amplify-socialmediademo-final-210720-authRole",
-      "UnauthRoleArn": "arn:aws:iam::691460774223:role/amplify-socialmediademo-final-210720-unauthRole",
-      "AuthRoleArn": "arn:aws:iam::691460774223:role/amplify-socialmediademo-final-210720-authRole",
-      "Region": "us-east-1",
-      "DeploymentBucketName": "amplify-socialmediademo-final-210720-deployment",
-      "UnauthRoleName": "amplify-socialmediademo-final-210720-unauthRole",
-      "StackName": "amplify-socialmediademo-final-210720",
-      "StackId": "arn:aws:cloudformation:us-east-1:691460774223:stack/amplify-socialmediademo-final-210720/be2abce0-dfa2-11eb-b9cf-0eb57e33ee85",
-      "AmplifyAppId": "d1wy4wywmb7wut"
+      "AuthRoleName": "amplify-socialmediademo-devx-63901-authRole",
+      "UnauthRoleArn": "arn:aws:iam::461354986992:role/amplify-socialmediademo-devx-63901-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::461354986992:role/amplify-socialmediademo-devx-63901-authRole",
+      "Region": "us-west-2",
+      "DeploymentBucketName": "amplify-socialmediademo-devx-63901-deployment",
+      "UnauthRoleName": "amplify-socialmediademo-devx-63901-unauthRole",
+      "StackName": "amplify-socialmediademo-devx-63901",
+      "StackId": "arn:aws:cloudformation:us-west-2:461354986992:stack/amplify-socialmediademo-devx-63901/5dd03fc0-5728-11ec-b7ac-06a3ee04cdc3",
+      "AmplifyAppId": "dr30j0xno2ez7"
     },
     "categories": {
       "auth": {

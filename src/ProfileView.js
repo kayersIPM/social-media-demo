@@ -1,21 +1,24 @@
 import { DataStore } from 'aws-amplify';
 
-function PostView({ post, currentUser }) {
+function ProfileView({ currentUser }) {
     let showDeleteButton = false
 
     // if (currentUser) {
     //     showDeleteButton = currentUser.signInUserSession.accessToken.payload['cognito:groups'].includes('Admins')
     // }
-    return <div className="post">
+   
+    
+    return <div className="profile">
         <div className="content">
-            {post.content}
+            <p>Email: {currentUser.attributes.email}</p>
+            
         </div>
-        <div>
+        {/* <div>
             {showDeleteButton && <button onClick={async () => {
                 await DataStore.delete(post)
             }}>Delete</button>}
-        </div>
+        </div> */}
     </div>
 }
 
-export default PostView
+export default ProfileView
