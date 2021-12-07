@@ -23,7 +23,7 @@ function ProfileView({ currentUser }) {
     const handleSave = ({ name, value, previousValue }) => {
         let cName = ("custom:" + String(name))
         let body = { cName: value } 
-        
+        userAttr[cName] = value
         const saveRes = updateUser(body)
         alert(name + ' saved as: ' + value + ' (prev: ' + previousValue + ')' + saveRes);
       };
