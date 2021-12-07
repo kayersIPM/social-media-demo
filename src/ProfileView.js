@@ -1,7 +1,9 @@
-import { DataStore } from 'aws-amplify';
+import { DataStore, Auth } from 'aws-amplify';
 import { EditText, EditTextarea } from 'react-edit-text';
 import 'react-edit-text/dist/index.css';
 import React from 'react'
+
+
 
 function ProfileView({ currentUser }) {
     let showDeleteButton = false
@@ -9,23 +11,38 @@ function ProfileView({ currentUser }) {
     // if (currentUser) {
     //     showDeleteButton = currentUser.signInUserSession.accessToken.payload['cognito:groups'].includes('Admins')
     // }
+    let userAttr = { 'custom:ptnum' : currentUser.attributes['custom:ptnum'], 'custom:fullname': currentUser.attributes['custom:fullname'], 'custom:bday': currentUser.attributes['custom:bday']}
     let hasPtnum = (currentUser.attributes['custom:ptnum'] === '' ?  currentUser.attributes['custom:ptnum']: 'PT12345678')
+    const updateUser = async( body) => {
+        const user = await Auth.currentAuthenticatedUser();
+        
+        const res = await Auth.updateUserAttributes(user, {
+          body
+        });
+      }
+    const handleSave = ({ name, value, previousValue }) => {
+        let cName = ("custom:" + String(name))
+        let body = { cName: value } 
+        
+        const saveRes = updateUser(body)
+        alert(name + ' saved as: ' + value + ' (prev: ' + previousValue + ')' + saveRes);
+      };
     return <React.Fragment>
         <div style={{whiteSpace: 'nowrap'}}>
             <strong><label className="mr-2">Full Name: </label></strong>
-            <EditText name="fullname" type="fullname" style={{width: '200px'}} defaultValue={currentUser.attributes.name || 'Kody Test'} inline/>
+            <EditText name="fullname" type="fullname" style={{width: '200px'}} onSave={handleSave} defaultValue={userAttr['custom:fullname'] || 'Kody Test'} inline/>
           </div>
           <div style={{whiteSpace: 'nowrap'}}>
             <strong><label className="mr-2">PtNum: </label></strong>
-            <EditText id="ptnum" name="ptnum" style={{width: '200px'}} defaultValue={hasPtnum} inline />
+            <EditText id="ptnum" name="ptnum" style={{width: '200px'}} onSave={handleSave} defaultValue={hasPtnum} inline />
           </div>
           <div style={{whiteSpace: 'nowrap'}}>
             <strong><label className="mr-2">Email Address: </label></strong>
-            <EditText name="email" type="email" style={{width: '200px'}} defaultValue={currentUser.attributes.email} inline/>
+            <EditText name="email" type="email" style={{width: '200px'}} onSave={handleSave} defaultValue={currentUser.attributes.email} inline />
           </div>
           <div style={{whiteSpace: 'nowrap'}}>
             <strong><label className="mr-2">Birthdate: </label></strong>
-            <EditText name="email" type="email" style={{width: '200px'}} defaultValue={currentUser.attributes['custom:bday'] || '05-16-1995'} inline/>
+            <EditText name="bday" type="bday" style={{width: '200px'}} onSave={handleSave} defaultValue={currentUser.attributes['custom:bday'] || '05-16-1995'} inline/>
           </div>
     </React.Fragment>
     // return <div className="profile">
