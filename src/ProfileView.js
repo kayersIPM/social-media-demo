@@ -14,10 +14,20 @@ function ProfileView({ currentUser }) {
     let userAttr = { 'email': currentUser.attributes.email, 'custom:ptnum' : currentUser.attributes['custom:ptnum'], 'custom:fullname': currentUser.attributes['custom:fullname'], 'custom:bday': currentUser.attributes['custom:bday']}
     // let hasPtnum = (currentUser.attributes['custom:ptnum'] === '' ?  currentUser.attributes['custom:ptnum']: 'PT12345678')
     const updateUser = async( body) => {
-        let bday = currentUser.attributes['custom:bday']
-        if(!bday) bday = prompt('Birthdate?', 'MM/DD/YYYY')
+        let bday = userAttr['custom:bday']
+        if(!bday) {
+          bday = prompt('Birthdate?', 'MM/DD/YYYY')
+          userAttr['custom:bday'] = bday
+        }
+        let fn = userAttr['custom:fullname']
+        if(!fn) {
+          fn = prompt('Full name?', 'Input here')
+          userAttr['custom:fullname'] = fn
+          currentUser.attributes['custom:fullname'] = fn
+        }
         const res = await Auth.updateUserAttributes(currentUser, {
-          'custom:bday': bday,
+          'custom:bday': userAttr['custom:bday'],
+          'custom:fullname': userAttr['custom:fullname'],
           'email': body
         });
         return res
@@ -26,22 +36,25 @@ function ProfileView({ currentUser }) {
         
         
         userAttr['email'] = value
+        currentUser.attributes.email = value
         try {
         const saveRes = await updateUser(value)
-        alert(name + ' saved as: ' + value + ' (prev: ' + previousValue + ')' + saveRes);
-        } catch(e) {alert(e)}
+        // alert(name + ' saved as: ' + value + ' (prev: ' + previousValue + ')' + saveRes);
+        } catch(e) {alert(e.message)}
         
       };
       const handleSave2 = async ({ name, value, previousValue }) => {
         
         
         userAttr['custom:bday'] = value
+        currentUser.attributes['custom:bday'] = value
         try {
         const saveRes = await updateUser(userAttr['email'])
-        alert(name + ' saved as: ' + value + ' (prev: ' + previousValue + ')' + saveRes);
+        // alert(name + ' saved as: ' + value + ' (prev: ' + previousValue + ')' + saveRes);
         } catch(e) {alert(e.message)}
         
       };
+
     return <React.Fragment>
         <div style={{whiteSpace: 'nowrap'}}>
             <strong><label className="mr-2">Full Name: </label></strong>
