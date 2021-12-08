@@ -14,19 +14,33 @@ function ProfileView({ currentUser }) {
     let userAttr = { 'email': currentUser.attributes.email, 'custom:ptnum' : currentUser.attributes['custom:ptnum'], 'custom:fullname': currentUser.attributes['custom:fullname'], 'custom:bday': currentUser.attributes['custom:bday']}
     // let hasPtnum = (currentUser.attributes['custom:ptnum'] === '' ?  currentUser.attributes['custom:ptnum']: 'PT12345678')
     const updateUser = async( body) => {
-        const user = await Auth.currentAuthenticatedUser();
         
-        const res = await Auth.updateUserAttributes(user, {
-          body
+        
+        const res = await Auth.updateUserAttributes(currentUser, {
+          'custom:bday': currentUser.attributes['custom:bday'],
+          'email': body
         });
         return res
       }
     const handleSave = async ({ name, value, previousValue }) => {
         
-        let body = { 'email': value } 
+        
         userAttr['email'] = value
-        const saveRes = await updateUser(body)
+        try {
+        const saveRes = await updateUser(value)
         alert(name + ' saved as: ' + value + ' (prev: ' + previousValue + ')' + saveRes);
+        } catch(e) {alert(e)}
+        
+      };
+      const handleSave2 = async ({ name, value, previousValue }) => {
+        
+        
+        userAttr['custom:bday'] = value
+        try {
+        const saveRes = await updateUser(value)
+        alert(name + ' saved as: ' + value + ' (prev: ' + previousValue + ')' + saveRes);
+        } catch(e) {alert(e)}
+        
       };
     return <React.Fragment>
         <div style={{whiteSpace: 'nowrap'}}>
@@ -43,7 +57,7 @@ function ProfileView({ currentUser }) {
           </div>
           <div style={{whiteSpace: 'nowrap'}}>
             <strong><label className="mr-2">Birthdate: </label></strong>
-            <EditText name="bday" type="bday" style={{width: '200px'}} onSave={handleSave} defaultValue={currentUser.attributes['custom:bday'] || '05-16-1995'} inline readonly/>
+            <EditText name="bday" type="bday" style={{width: '200px'}} onSave={handleSave2} defaultValue={currentUser.attributes['custom:bday']} inline/>
           </div>
     </React.Fragment>
     // return <div className="profile">
