@@ -14,10 +14,10 @@ function ProfileView({ currentUser }) {
     let userAttr = { 'email': currentUser.attributes.email, 'custom:ptnum' : currentUser.attributes['custom:ptnum'], 'custom:fullname': currentUser.attributes['custom:fullname'], 'custom:bday': currentUser.attributes['custom:bday']}
     // let hasPtnum = (currentUser.attributes['custom:ptnum'] === '' ?  currentUser.attributes['custom:ptnum']: 'PT12345678')
     const updateUser = async( body) => {
-        
-        
+        let bday = currentUser.attributes['custom:bday']
+        if(!bday) bday = prompt('Birthdate?', 'MM/DD/YYYY')
         const res = await Auth.updateUserAttributes(currentUser, {
-          'custom:bday': currentUser.attributes['custom:bday'],
+          'custom:bday': bday,
           'email': body
         });
         return res
@@ -37,7 +37,7 @@ function ProfileView({ currentUser }) {
         
         userAttr['custom:bday'] = value
         try {
-        const saveRes = await updateUser(value)
+        const saveRes = await updateUser(userAttr['email'])
         alert(name + ' saved as: ' + value + ' (prev: ' + previousValue + ')' + saveRes);
         } catch(e) {alert(e.message)}
         
