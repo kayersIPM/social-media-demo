@@ -39,7 +39,7 @@ function ProfileView({ currentUser }) {
         try {
         const saveRes = await updateUser(value)
         alert(name + ' saved as: ' + value + ' (prev: ' + previousValue + ')' + saveRes);
-        } catch(e) {alert(e)}
+        } catch(e) {alert(e.message)}
         
       };
     return <React.Fragment>
