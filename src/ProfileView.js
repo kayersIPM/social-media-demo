@@ -13,9 +13,9 @@ class ProfileView extends React.Component {
     // }
     
      state = {
-      email : ``,
-      fullname: ``,
-      bday:  ``
+      email : this.props.currentUser.attributes.email || ``,
+      fullname: this.props.currentUser.attributes['custom:fullname'] || ``,
+      bday:  this.props.currentUser.attributes['custom:bday'] || ``
      }
   
     // if(currentUser.attributes.email) this.state['email'] = currentUser.attributes.email 
@@ -88,7 +88,7 @@ class ProfileView extends React.Component {
     return <React.Fragment>
         <div style={{whiteSpace: 'nowrap'}}>
             <strong><label className="mr-2">Full Name: </label></strong>
-            <EditText name="fullname" type="fullname" style={{width: '200px'}} defaultValue={this.state.fullname} inline readonly/>
+            <EditText name="fullname" type="fullname" style={{width: '200px'}} value={this.state.fullname} inline readonly/>
           </div>
           
           <div style={{whiteSpace: 'nowrap'}}>
@@ -97,7 +97,7 @@ class ProfileView extends React.Component {
           </div>
           <div style={{whiteSpace: 'nowrap'}}>
             <strong><label className="mr-2">Birthdate: </label></strong>
-            <EditText name="bday" type="bday" style={{width: '200px'}} defaultValue={this.state.bday} inline readonly/>
+            <EditText name="bday" type="bday" style={{width: '200px'}} value={this.state.bday} inline readonly/>
           </div>
     </React.Fragment>
     }
