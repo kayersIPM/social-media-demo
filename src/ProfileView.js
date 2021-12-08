@@ -1,13 +1,14 @@
 import { DataStore, Auth } from 'aws-amplify';
 import { EditText, EditTextarea } from 'react-edit-text';
 import 'react-edit-text/dist/index.css';
-import React from 'react'
+import {React, useState} from 'react'
+
 
 
 
 function ProfileView({ currentUser }) {
     let showDeleteButton = false
-
+    const [currentUser, setCurrentUser] = useState()
     // if (currentUser) {
     //     showDeleteButton = currentUser.signInUserSession.accessToken.payload['cognito:groups'].includes('Admins')
     // }
@@ -27,12 +28,13 @@ function ProfileView({ currentUser }) {
         }
         const res = await Auth.updateUserAttributes(currentUser, {
           'custom:bday': userAttr['custom:bday'],
-          'custom:fullname': userAttr['custom:fullname'],
+          'custom:fullname': 'Test',
           'email': body
         });
+        console.log('res updateUSer', res)
         let newU = await Auth.currentAuthenticatedUser();
-        this.setState({newU})
-        return res
+        
+        return newU
       }
     const handleSave = async ({ name, value, previousValue }) => {
         
@@ -41,6 +43,7 @@ function ProfileView({ currentUser }) {
         currentUser.attributes.email = value
         try {
         const saveRes = await updateUser(value)
+        setCurrentUser(saveRes)
         // alert(name + ' saved as: ' + value + ' (prev: ' + previousValue + ')' + saveRes);
         } catch(e) {alert(e.message)}
         
@@ -52,6 +55,7 @@ function ProfileView({ currentUser }) {
         currentUser.attributes['custom:bday'] = value
         try {
         const saveRes = await updateUser(userAttr['email'])
+        setCurrentUser(saveRes)
         // alert(name + ' saved as: ' + value + ' (prev: ' + previousValue + ')' + saveRes);
         } catch(e) {alert(e.message)}
         
