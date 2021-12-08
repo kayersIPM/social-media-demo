@@ -30,6 +30,8 @@ function ProfileView({ currentUser }) {
           'custom:fullname': userAttr['custom:fullname'],
           'email': body
         });
+        let newU = await Auth.currentAuthenticatedUser();
+        this.setState({newU})
         return res
       }
     const handleSave = async ({ name, value, previousValue }) => {
@@ -60,17 +62,17 @@ function ProfileView({ currentUser }) {
             <strong><label className="mr-2">Full Name: </label></strong>
             <EditText name="fullname" type="fullname" style={{width: '200px'}} onSave={handleSave} defaultValue={userAttr['custom:fullname']} inline readonly/>
           </div>
-          <div style={{whiteSpace: 'nowrap'}}>
+          {/* <div style={{whiteSpace: 'nowrap'}}>
             <strong><label className="mr-2">PtNum: </label></strong>
             <EditText id="ptnum" name="ptnum" style={{width: '200px'}} onSave={handleSave} defaultValue={currentUser.attributes['custom:ptnum']} inline readonly/>
-          </div>
+          </div> */}
           <div style={{whiteSpace: 'nowrap'}}>
             <strong><label className="mr-2">Email Address: </label></strong>
             <EditText name="email" type="email" style={{width: '200px'}} onSave={handleSave} defaultValue={currentUser.attributes.email} inline />
           </div>
           <div style={{whiteSpace: 'nowrap'}}>
             <strong><label className="mr-2">Birthdate: </label></strong>
-            <EditText name="bday" type="bday" style={{width: '200px'}} onSave={handleSave2} defaultValue={currentUser.attributes['custom:bday']} inline/>
+            <EditText name="bday" type="bday" style={{width: '200px'}} onSave={handleSave2} defaultValue={currentUser.attributes['custom:bday']} inline readonly/>
           </div>
     </React.Fragment>
     // return <div className="profile">
