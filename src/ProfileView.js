@@ -38,7 +38,7 @@ class ProfileView extends React.Component {
           // currentUser.attributes['custom:fullname'] = fn
         }
         // const setB = () => { let b = prompt('Birthdate?', 'MM/DD/YYYY'); this.setState({bday: b}); return b}
-        alert(JSON.stringify(this.state))
+        //alert(JSON.stringify(this.state))
         const res = await Auth.updateUserAttributes(newU, {
           'custom:bday': this.state['bday'],
           'custom:fullname': this.state['fullname'],
