@@ -1,84 +1,106 @@
 import { DataStore, Auth } from 'aws-amplify';
 import { EditText, EditTextarea } from 'react-edit-text';
 import 'react-edit-text/dist/index.css';
-import {React, useState} from 'react'
+import React from 'react'
 
 
 
 
-function ProfileView({ currentUser }) {
-    let showDeleteButton = false
-    const [currentUser, setCurrentUser] = useState()
+class ProfileView extends React.Component {
+    // let showDeleteButton = false
     // if (currentUser) {
     //     showDeleteButton = currentUser.signInUserSession.accessToken.payload['cognito:groups'].includes('Admins')
     // }
-    let userAttr = { 'email': currentUser.attributes.email, 'custom:ptnum' : currentUser.attributes['custom:ptnum'], 'custom:fullname': currentUser.attributes['custom:fullname'], 'custom:bday': currentUser.attributes['custom:bday']}
+    
+     state = {
+      email : ``,
+      fullname: ``,
+      bday:  ``
+     }
+  
+    // if(currentUser.attributes.email) this.state['email'] = currentUser.attributes.email 
+    // if(currentUser.attributes['custom:fullname']) this.state['custom:fullname'] = currentUser.attributes['custom:fullname'] 
+    // if(currentUser.attributes['custom:bday']) this.state['custom:bday'] = currentUser.attributes['custom:bday']
+    // let userAttr = { 'email': currentUser.attributes.email, 'custom:ptnum' : currentUser.attributes['custom:ptnum'], 'custom:fullname': currentUser.attributes['custom:fullname'], 'custom:bday': currentUser.attributes['custom:bday']}
     // let hasPtnum = (currentUser.attributes['custom:ptnum'] === '' ?  currentUser.attributes['custom:ptnum']: 'PT12345678')
-    const updateUser = async( body) => {
-        let bday = userAttr['custom:bday']
+     updateUser = async( body) => {
+      let newU = await Auth.currentAuthenticatedUser();
+        let bday = this.state['bday']
         if(!bday) {
           bday = prompt('Birthdate?', 'MM/DD/YYYY')
-          userAttr['custom:bday'] = bday
+          this.setState({['bday'] : bday })
+          // currentUser.attributes['bday'] = bday
         }
-        let fn = userAttr['custom:fullname']
+        let fn = this.state['fullname']
         if(!fn) {
           fn = prompt('Full name?', 'Input here')
-          userAttr['custom:fullname'] = fn
-          currentUser.attributes['custom:fullname'] = fn
+         this.setState({['fullname'] : fn})
+          // currentUser.attributes['custom:fullname'] = fn
         }
-        const res = await Auth.updateUserAttributes(currentUser, {
-          'custom:bday': userAttr['custom:bday'],
-          'custom:fullname': 'Test',
+        // const setB = () => { let b = prompt('Birthdate?', 'MM/DD/YYYY'); this.setState({bday: b}); return b}
+        alert(JSON.stringify(this.state))
+        const res = await Auth.updateUserAttributes(newU, {
+          'custom:bday': this.state['bday'],
+          'custom:fullname': this.state['fullname'],
           'email': body
         });
         console.log('res updateUSer', res)
-        let newU = await Auth.currentAuthenticatedUser();
+        
         
         return newU
-      }
-    const handleSave = async ({ name, value, previousValue }) => {
-        
-        
-        userAttr['email'] = value
-        currentUser.attributes.email = value
-        try {
-        const saveRes = await updateUser(value)
-        setCurrentUser(saveRes)
-        // alert(name + ' saved as: ' + value + ' (prev: ' + previousValue + ')' + saveRes);
-        } catch(e) {alert(e.message)}
-        
       };
-      const handleSave2 = async ({ name, value, previousValue }) => {
-        
-        
-        userAttr['custom:bday'] = value
-        currentUser.attributes['custom:bday'] = value
+     handleUpdate = async (event) => {
+       console.log(event, JSON.stringify(event))
+        this.setState({
+          [event.name]: event.value,
+        })
         try {
-        const saveRes = await updateUser(userAttr['email'])
-        setCurrentUser(saveRes)
-        // alert(name + ' saved as: ' + value + ' (prev: ' + previousValue + ')' + saveRes);
-        } catch(e) {alert(e.message)}
-        
+          const saveRes = await this.updateUser(event.value)
+          // this.setCurrentUser(saveRes)
+          // alert(name + ' saved as: ' + value + ' (prev: ' + previousValue + ')' + saveRes);
+          } catch(e) {alert(e.message)}
       };
-
+    //  handleSave = async ({ name, value, previousValue }) => {
+        
+        
+    //     this.setState({['email'] : value })
+    //     // currentUser.attributes.email = value
+    //     try {
+    //     const saveRes = await this.updateUser(value)
+    //     // this.setCurrentUser(saveRes)
+    //     // alert(name + ' saved as: ' + value + ' (prev: ' + previousValue + ')' + saveRes);
+    //     } catch(e) {alert(e.message)}
+        
+    //   };
+      // const handleSave2 = async ({ name, value, previousValue }) => {
+        
+        
+      //   userAttr['custom:bday'] = value
+      //   currentUser.attributes['custom:bday'] = value
+      //   try {
+      //   const saveRes = await updateUser(state['email'])
+      //   // this.setCurrentUser(saveRes)
+      //   // alert(name + ' saved as: ' + value + ' (prev: ' + previousValue + ')' + saveRes);
+      //   } catch(e) {alert(e.message)}
+        
+      // };
+    render () {
     return <React.Fragment>
         <div style={{whiteSpace: 'nowrap'}}>
             <strong><label className="mr-2">Full Name: </label></strong>
-            <EditText name="fullname" type="fullname" style={{width: '200px'}} onSave={handleSave} defaultValue={userAttr['custom:fullname']} inline readonly/>
+            <EditText name="fullname" type="fullname" style={{width: '200px'}} defaultValue={this.state.fullname} inline readonly/>
           </div>
-          {/* <div style={{whiteSpace: 'nowrap'}}>
-            <strong><label className="mr-2">PtNum: </label></strong>
-            <EditText id="ptnum" name="ptnum" style={{width: '200px'}} onSave={handleSave} defaultValue={currentUser.attributes['custom:ptnum']} inline readonly/>
-          </div> */}
+          
           <div style={{whiteSpace: 'nowrap'}}>
             <strong><label className="mr-2">Email Address: </label></strong>
-            <EditText name="email" type="email" style={{width: '200px'}} onSave={handleSave} defaultValue={currentUser.attributes.email} inline />
+            <EditText name="email" type="email" style={{width: '200px'}} onSave={this.handleUpdate} defaultValue={this.state.email} inline />
           </div>
           <div style={{whiteSpace: 'nowrap'}}>
             <strong><label className="mr-2">Birthdate: </label></strong>
-            <EditText name="bday" type="bday" style={{width: '200px'}} onSave={handleSave2} defaultValue={currentUser.attributes['custom:bday']} inline readonly/>
+            <EditText name="bday" type="bday" style={{width: '200px'}} defaultValue={this.state.bday} inline readonly/>
           </div>
     </React.Fragment>
+    }
     // return <div className="profile">
     //     <div className="content">
     //         <EditText
