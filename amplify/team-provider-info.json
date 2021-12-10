@@ -16,5 +16,23 @@
         "socialmediademo0881b347": {}
       }
     }
+  },
+  "newauth": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-socialmediademo-newauth-200831-authRole",
+      "UnauthRoleArn": "arn:aws:iam::461354986992:role/amplify-socialmediademo-newauth-200831-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::461354986992:role/amplify-socialmediademo-newauth-200831-authRole",
+      "Region": "us-west-2",
+      "DeploymentBucketName": "amplify-socialmediademo-newauth-200831-deployment",
+      "UnauthRoleName": "amplify-socialmediademo-newauth-200831-unauthRole",
+      "StackName": "amplify-socialmediademo-newauth-200831",
+      "StackId": "arn:aws:cloudformation:us-west-2:461354986992:stack/amplify-socialmediademo-newauth-200831/d7d1d390-596e-11ec-9c68-0a856a1e201b",
+      "AmplifyAppId": "dr30j0xno2ez7"
+    },
+    "categories": {
+      "auth": {
+        "socialmediademo0881b347": {}
+      }
+    }
   }
 }
