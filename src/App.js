@@ -44,18 +44,18 @@ function App() {
     checkLoginState()
     let ignore = false
     async function postData() { 
-      const apiName = 'testAuthChargeHandler';
+      const apiName = 'testAuthChargeAPI';
       const path = '/charge';
       const myInit = { // OPTIONAL
           body: {
             "ptnum": currentUser.attributes.sub
           }
         };
-      const resuCharge = await API.post(apiName, path, myInit);
-      if(!ignore) setCharges(resuCharge);
+      
+      if(!ignore) setCharges(await API.post(apiName, path, myInit));
     }
     
-    if(currentUser) postData();
+    postData();
     return () => { ignore = true; }
    
   }, [currentUser]);
@@ -84,7 +84,7 @@ function App() {
       { currentUser && 
       <div className="posts">
         <h1>Total Charge Due</h1>
-        {charges.map(charge => <ChargeView charge={charge} currentUser={currentUser}/>)}
+       
       </div> }
       {showAuthenticator && 
         <LoginPopup

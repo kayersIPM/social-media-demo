@@ -12,6 +12,7 @@ json = "*"
 logging = "*"
 sys = "*"
 base64 = "*"
+pyodbc = "*"
 
 [requires]
 python_version = "3.8"
