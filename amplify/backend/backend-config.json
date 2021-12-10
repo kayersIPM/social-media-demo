@@ -19,7 +19,7 @@
             {
               "authenticationType": "AMAZON_COGNITO_USER_POOLS",
               "userPoolConfig": {
-                "userPoolId": "authemailauthsocial"
+                "userPoolId": "authTestauth"
               }
             }
           ]
@@ -29,16 +29,14 @@
   },
   "auth": {
 
-    "emailauthsocial": {
+    "testAuth": {
       "service": "Cognito",
       "providerPlugin": "awscloudformation",
       "dependsOn": [],
       "customAuth": false,
       "frontendAuthConfig": {
         "socialProviders": [],
-        "usernameAttributes": [
-          "EMAIL"
-        ],
+        "usernameAttributes": [],
         "signupAttributes": [
           "EMAIL"
         ],

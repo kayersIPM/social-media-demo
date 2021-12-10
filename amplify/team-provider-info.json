@@ -55,5 +55,24 @@
         "emailauthsocial": {}
       }
     }
+  },
+  "test": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-socialmediademo-test-234258-authRole",
+      "UnauthRoleArn": "arn:aws:iam::461354986992:role/amplify-socialmediademo-test-234258-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::461354986992:role/amplify-socialmediademo-test-234258-authRole",
+      "Region": "us-west-2",
+      "DeploymentBucketName": "amplify-socialmediademo-test-234258-deployment",
+      "UnauthRoleName": "amplify-socialmediademo-test-234258-unauthRole",
+      "StackName": "amplify-socialmediademo-test-234258",
+      "StackId": "arn:aws:cloudformation:us-west-2:461354986992:stack/amplify-socialmediademo-test-234258/cd9b18f0-598c-11ec-90bf-025df57ea103",
+      "AmplifyAppId": "dr30j0xno2ez7"
+    },
+    "categories": {
+      "auth": {
+        "emailauthsocial": {},
+        "testAuth": {}
+      }
+    }
   }
 }
