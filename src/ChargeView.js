@@ -10,11 +10,7 @@ function ChargeView({ charge, currentUser }) {
         <div className="content">
             {charge.bdate}
         </div>
-        <div>
-            {showDeleteButton && <button onClick={async () => {
-                await DataStore.delete(post)
-            }}>Delete</button>}
-        </div>
+        
     </div>
 }
 
