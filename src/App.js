@@ -2,7 +2,7 @@ import { DataStore, Auth, API } from 'aws-amplify';
 import { Post } from './models'
 import PostView from './PostView';
 import ChargeView from './ChargeView';
-import { useEffect, useState, componentDidMount } from 'react';
+import { useEffect, useState } from 'react';
 import './App.css';
 import LoginButton from './LoginButton';
 import LoginPopup from './LoginPopup';
@@ -40,9 +40,10 @@ function App() {
 
   //   return () => subscription.unsubscribe()
   // }, [])
-  componentDidMount( async () => {
+  useEffect(() => {
     checkLoginState()
-    const postData = async () => { 
+    let ignore = false
+    async function postData() { 
       const apiName = 'testAuthChargeHandler';
       const path = '/charge';
       const myInit = { // OPTIONAL
@@ -50,14 +51,14 @@ function App() {
             "ptnum": currentUser.attributes.sub
           }
         };
-  
-      return await API.post(apiName, path, myInit);
+      const resuCharge = await API.post(apiName, path, myInit);
+      if(!ignore) setCharges(resuCharge);
     }
-    if(currentUser) loadCharges()
-    const loadCharges = async () => {
-      setCharges(postData)
-    }
-  })
+    
+    if(currentUser) postData();
+    return () => { ignore = true; }
+   
+  }, [currentUser]);
 //{posts.map(post => <PostView post={post} currentUser={currentUser}/>)}
   return (
     <div className="App">
