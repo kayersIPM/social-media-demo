@@ -28,12 +28,7 @@
     }
   },
   "auth": {
-    "socialmediademo0881b347": {
-      "service": "Cognito",
-      "providerPlugin": "awscloudformation",
-      "dependsOn": [],
-      "customAuth": false
-    },
+
     "socialmediademo8eaa1c67": {
       "service": "Cognito",
       "providerPlugin": "awscloudformation",
