@@ -2,7 +2,7 @@ function LoginButton({ currentUser, onLogin, onLogout }) {
     if (currentUser) {
         return <button className="user-button" onClick={onLogout}>
             <div className="username">
-                😀 {currentUser.attributes['custom:fullname']}
+                😀 { currentUser.attributes.sub }
             </div>
             <div className="log-out">
                 Log out

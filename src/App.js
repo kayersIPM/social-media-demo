@@ -1,4 +1,4 @@
-import { DataStore, Auth, API } from 'aws-amplify';
+import { DataStore, Auth, API, Hub } from 'aws-amplify';
 import { Post } from './models'
 import PostView from './PostView';
 import ChargeView from './ChargeView';
@@ -26,7 +26,25 @@ function App() {
       setCurrentUser(null)
     }
   }
-
+  async function checkUser() {
+    let user = await Auth.currentAuthenticatedUser()
+    if(user) {
+      console.log(user.attributes)
+      return user.attributes
+    }
+       
+   }
+   async function postData() { 
+     const apiName = 'testAuthChargeAPI';
+     const path = '/charge';
+     const myInit = { // OPTIONAL
+         body: {
+           "ptnum": checkUser()['sub']
+         }
+       };
+     
+     setCharges(await API.post(apiName, path, myInit));
+   }
   // useEffect(async () => {
   //   checkLoginState()
   //   const loadPosts = async () => {
@@ -42,23 +60,23 @@ function App() {
   // }, [])
   useEffect(() => {
     checkLoginState()
-    let ignore = false
-    async function postData() { 
-      const apiName = 'testAuthChargeAPI';
-      const path = '/charge';
-      const myInit = { // OPTIONAL
-          body: {
-            "ptnum": currentUser.attributes.sub
-          }
-        };
-      
-      if(!ignore) setCharges(await API.post(apiName, path, myInit));
-    }
-    
-    if(currentUser) postData();
-    return () => { ignore = true; }
-   
-  }, []);
+    Hub.listen('auth', (data) => {
+      const { payload } = data
+      console.log('A new auth event has happened: ', data)
+       if (payload.event === 'signIn') {
+         console.log('a user has signed in!')
+         checkLoginState()
+          postData()
+          Hub.remove('auth')
+       }
+       if (payload.event === 'signOut') {
+         console.log('a user has signed out!')
+       }
+    })
+  }, [])
+  
+
+  
 //{posts.map(post => <PostView post={post} currentUser={currentUser}/>)}
   return (
     <div className="App">
@@ -84,7 +102,7 @@ function App() {
       { currentUser && 
       <div className="posts">
         <h1>Total Charge Due</h1>
-       
+        {charges.map(charge => <ChargeView charge={charge} currentUser={currentUser}/>)}
       </div> }
       {showAuthenticator && 
         <LoginPopup
@@ -92,6 +110,7 @@ function App() {
           onCancel={() => setShowAuthenticator(false)}/>}
     </div>
   );
+  
 }
 
 export default App;
