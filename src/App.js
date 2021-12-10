@@ -55,10 +55,10 @@ function App() {
       if(!ignore) setCharges(await API.post(apiName, path, myInit));
     }
     
-    postData();
+    if(currentUser) postData();
     return () => { ignore = true; }
    
-  }, [currentUser]);
+  }, []);
 //{posts.map(post => <PostView post={post} currentUser={currentUser}/>)}
   return (
     <div className="App">

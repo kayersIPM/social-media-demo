@@ -8,10 +8,6 @@ verify_ssl = true
 [packages]
 src = {editable = true, path = "./src"}
 boto3 = "*"
-json = "*"
-logging = "*"
-sys = "*"
-base64 = "*"
 pyodbc = "*"
 
 [requires]
