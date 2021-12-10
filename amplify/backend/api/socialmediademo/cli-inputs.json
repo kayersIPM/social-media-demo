@@ -20,7 +20,7 @@
       },
       {
         "mode": "AMAZON_COGNITO_USER_POOLS",
-        "cognitoUserPoolId": "authsocialmediademo0881b347"
+        "cognitoUserPoolId": "authsocialmediademo8eaa1c67"
       }
     ]
   }
