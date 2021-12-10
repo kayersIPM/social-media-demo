@@ -1,6 +1,7 @@
-import { DataStore, Auth } from 'aws-amplify';
+import { DataStore, Auth, API } from 'aws-amplify';
 import { Post } from './models'
 import PostView from './PostView';
+import ChargeView from './ChargeView';
 import { useEffect, useState, componentDidMount } from 'react';
 import './App.css';
 import LoginButton from './LoginButton';
