@@ -1,7 +1,7 @@
 import { DataStore, Auth } from 'aws-amplify';
 import { Post } from './models'
 import PostView from './PostView';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, componentDidMount } from 'react';
 import './App.css';
 import LoginButton from './LoginButton';
 import LoginPopup from './LoginPopup';
@@ -9,7 +9,8 @@ import ProfileView from './ProfileView';
 import { AuthState } from '@aws-amplify/ui-components';
 
 function App() {
-  const [posts, setPosts] = useState([])
+  // const [posts, setPosts] = useState([])
+  const [charges, setCharges] = useState([])
   const [currentUser, setCurrentUser] = useState()
   const [showAuthenticator, setShowAuthenticator] = useState(false)
 
@@ -25,20 +26,38 @@ function App() {
     }
   }
 
-  useEffect(async () => {
+  // useEffect(async () => {
+  //   checkLoginState()
+  //   const loadPosts = async () => {
+  //     setPosts(await DataStore.query(Post))
+  //   }
+  //   loadPosts()
+
+  //   const subscription = DataStore.observe(Post).subscribe(() => {
+  //     loadPosts()
+  //   })
+
+  //   return () => subscription.unsubscribe()
+  // }, [])
+  componentDidMount( async () => {
     checkLoginState()
-    const loadPosts = async () => {
-      setPosts(await DataStore.query(Post))
+    const postData = async () => { 
+      const apiName = 'testAuthChargeHandler';
+      const path = '/charge';
+      const myInit = { // OPTIONAL
+          body: {
+            "ptnum": currentUser.attributes.sub
+          }
+        };
+  
+      return await API.post(apiName, path, myInit);
     }
-    loadPosts()
-
-    const subscription = DataStore.observe(Post).subscribe(() => {
-      loadPosts()
-    })
-
-    return () => subscription.unsubscribe()
-  }, [])
-
+    if(currentUser) loadCharges()
+    const loadCharges = async () => {
+      setCharges(postData)
+    }
+  })
+//{posts.map(post => <PostView post={post} currentUser={currentUser}/>)}
   return (
     <div className="App">
       <nav>
@@ -63,7 +82,7 @@ function App() {
       { currentUser && 
       <div className="posts">
         <h1>Total Charge Due</h1>
-        {posts.map(post => <PostView post={post} currentUser={currentUser}/>)}
+        {charges.map(charge => <ChargeView charge={charge} currentUser={currentUser}/>)}
       </div> }
       {showAuthenticator && 
         <LoginPopup

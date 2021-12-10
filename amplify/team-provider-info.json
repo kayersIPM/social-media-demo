@@ -66,12 +66,19 @@
       "UnauthRoleName": "amplify-socialmediademo-test-234258-unauthRole",
       "StackName": "amplify-socialmediademo-test-234258",
       "StackId": "arn:aws:cloudformation:us-west-2:461354986992:stack/amplify-socialmediademo-test-234258/cd9b18f0-598c-11ec-90bf-025df57ea103",
-      "AmplifyAppId": "dr30j0xno2ez7"
+      "AmplifyAppId": "dr30j0xno2ez7",
+      "APIGatewayAuthURL": "https://s3.amazonaws.com/amplify-socialmediademo-test-234258-deployment/amplify-cfn-templates/api/APIGatewayAuthStack.json"
     },
     "categories": {
       "auth": {
         "emailauthsocial": {},
         "testAuth": {}
+      },
+      "function": {
+        "testAuthChargeHandler": {
+          "deploymentBucketName": "amplify-socialmediademo-test-234258-deployment",
+          "s3Key": "amplify-builds/testAuthChargeHandler-465242424b416b715950-build.zip"
+        }
       }
     }
   }

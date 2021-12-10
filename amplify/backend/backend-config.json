@@ -25,10 +25,23 @@
           ]
         }
       }
+    },
+    "testAuthChargeAPI": {
+      "service": "API Gateway",
+      "providerPlugin": "awscloudformation",
+      "dependsOn": [
+        {
+          "category": "function",
+          "resourceName": "testAuthChargeHandler",
+          "attributes": [
+            "Name",
+            "Arn"
+          ]
+        }
+      ]
     }
   },
   "auth": {
-
     "testAuth": {
       "service": "Cognito",
       "providerPlugin": "awscloudformation",
@@ -52,6 +65,14 @@
           "EMAIL"
         ]
       }
+    }
+  },
+  "function": {
+    "testAuthChargeHandler": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda",
+      "dependsOn": []
     }
   }
 }

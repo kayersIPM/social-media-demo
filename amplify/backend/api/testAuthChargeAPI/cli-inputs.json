@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "paths": {
+    "/charge": {
+      "name": "/charge",
+      "lambdaFunction": "testAuthChargeHandler",
+      "permissions": {
+        "setting": "private",
+        "auth": [
+          "create",
+          "read",
+          "update"
+        ]
+      }
+    }
+  }
+}

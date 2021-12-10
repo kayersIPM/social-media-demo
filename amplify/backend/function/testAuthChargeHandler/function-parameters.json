@@ -1,0 +1,8 @@
+{
+  "lambdaLayers": [
+    {
+      "type": "ExternalLayer",
+      "arn": "arn:aws:lambda:us-west-2:461354986992:layer:pyodbc_layer:1"
+    }
+  ]
+}
