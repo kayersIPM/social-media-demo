@@ -39,7 +39,10 @@ function App() {
      const path = '/charge';
      const myInit = { // OPTIONAL
          body: {
-           "ptnum": checkUser()['sub']
+           "ptnum": checkUser()['preferred_username']
+         },
+         headers: {
+           "x-api-key": "SK1mOvYZ621rewLSB3Tshaoc2J7J2hbu3A13oqNJ"
          }
        };
      
