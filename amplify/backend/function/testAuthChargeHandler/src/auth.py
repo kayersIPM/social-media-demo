@@ -62,4 +62,4 @@ def get_secret():
             msg = "secret retrieved"
             logger.info(msg)
             
-    return [json.loads(secret),msg]
+        return [json.loads(secret),msg]
