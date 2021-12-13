@@ -32,10 +32,9 @@ def handler(event, context):
     #(['username', 'password', 'engine', 'host', 'port', 'dbname']) 
     creds = 'Driver={ODBC Driver 17 for SQL Server};Server='+sec2['host']+','+sec2['port']+';Database='+sec2['dbname']+';UID='+sec2['username']+';PWD='+sec2['password']+';'
     try:
-        ptn = event['body']['ptnum']
-        ptn = ptn.upper()
+        logger.info('make ptn')
+        ptn = json.loads(event['body'])['ptnum'].upper()
         logger.info(ptn)
-        print(event['body'], ptn)
         logger.info('attempting to connect...')
         print(creds)
         conn = pyodbc.connect(creds)

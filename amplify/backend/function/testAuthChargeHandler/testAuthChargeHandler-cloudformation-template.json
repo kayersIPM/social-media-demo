@@ -82,7 +82,16 @@
         "Layers": [
           "arn:aws:lambda:us-west-2:461354986992:layer:pyodbc_layer:1"
         ],
-        "Timeout": 25
+        "Timeout": 69,
+        "VpcConfig": {
+          "SecurityGroupIds": [
+            "sg-096be95088b9dc3cc"
+          ],
+          "SubnetIds": [
+            "subnet-0ad505b000f2f91ad",
+            "subnet-02b0b65bec7c6915f"
+          ]
+        }
       }
     },
     "LambdaExecutionRole": {
@@ -178,6 +187,18 @@
                   ]
                 }
               ]
+            },
+            {
+              "Effect": "Allow",
+              "Action": [
+                "ec2:DescribeNetworkInterfaces",
+                "ec2:CreateNetworkInterface",
+                "ec2:DeleteNetworkInterface",
+                "ec2:DescribeInstances",
+                "ec2:AttachNetworkInterface",
+                "ec2:DescribeSecurityGroups"
+              ],
+              "Resource": "*"
             }
           ]
         }
