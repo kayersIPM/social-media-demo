@@ -26,27 +26,28 @@ function App() {
       setCurrentUser(null)
     }
   }
-  async function checkUser() {
-    let user = await Auth.currentAuthenticatedUser()
-    if(user) {
-      console.log(user.attributes)
-      return user.attributes
-    }
+  // const checkUser = async () => {
+  //   let user = await Auth.currentAuthenticatedUser()
+  //   if(user) {
+  //     console.log(user.attributes)
+  //     return user.attributes['preferred_username']
+  //   }
        
-   }
-   async function postData() { 
+  //  }
+   const postData = async () => {
+     const currentUser = await Auth.currentAuthenticatedUser();
      const apiName = 'testAuthChargeAPI';
      const path = '/charge';
      const myInit = { // OPTIONAL
          body: {
-           "ptnum": checkUser()['preferred_username']
+           ptnum: currentUser.attributes.preferred_username
          },
          headers: {
            "x-api-key": "SK1mOvYZ621rewLSB3Tshaoc2J7J2hbu3A13oqNJ"
          }
        };
      
-     setCharges(await API.post(apiName, path, myInit));
+     return API.post(apiName, path, myInit);
    }
   // useEffect(async () => {
   //   checkLoginState()
@@ -63,13 +64,13 @@ function App() {
   // }, [])
   useEffect(() => {
     checkLoginState()
-    Hub.listen('auth', (data) => {
+    Hub.listen('auth', async(data) => {
       const { payload } = data
       console.log('A new auth event has happened: ', data)
        if (payload.event === 'signIn') {
          console.log('a user has signed in!')
-         checkLoginState()
-          postData()
+        //  checkLoginState()
+          setCharges(await postData())
           Hub.remove('auth')
        }
        if (payload.event === 'signOut') {

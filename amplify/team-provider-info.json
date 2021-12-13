@@ -77,7 +77,7 @@
       "function": {
         "testAuthChargeHandler": {
           "deploymentBucketName": "amplify-socialmediademo-test-234258-deployment",
-          "s3Key": "amplify-builds/testAuthChargeHandler-6261383975782b495474-build.zip"
+          "s3Key": "amplify-builds/testAuthChargeHandler-476b714a36706d563070-build.zip"
         }
       }
     }

@@ -10,6 +10,7 @@ logger = logging.getLogger()
 logger.setLevel(logging.INFO)
 
 def handler(event, context):
+    logger.info(json.dumps(event['body']))
     try:
         my_secret = get_secret()
         sec2 = my_secret[0]
@@ -31,18 +32,22 @@ def handler(event, context):
     #(['username', 'password', 'engine', 'host', 'port', 'dbname']) 
     creds = 'Driver={ODBC Driver 17 for SQL Server};Server='+sec2['host']+','+sec2['port']+';Database='+sec2['dbname']+';UID='+sec2['username']+';PWD='+sec2['password']+';'
     try:
-        ptn = event.get('body')['ptnum']
-        print(ptn)
+        ptn = event['body']['ptnum']
+        ptn = ptn.upper()
+        logger.info(ptn)
+        print(event['body'], ptn)
         logger.info('attempting to connect...')
         print(creds)
         conn = pyodbc.connect(creds)
         cursor = conn.cursor()
         logger.info('connected')
         resLst = []
-        q = "SELECT patient_no, lastname, firstname, middlename, bdate, email FROM [imsreports].[patient_master] WHERE active = 'Y' AND patient_no =" + ptn
+        q = "SELECT patient_no, lastname, firstname, middlename, bdate, email FROM [imsreports].[patient_master] WHERE active = 'Y' AND patient_no ='" + ptn + "'"
+        logger.info(q)
+        print(q)
         cursor.execute(q)
         for row in cursor:
-            print(row)
+            logger.info(row)
             resLst.append(row)
         return {
             'statusCode': 200,
