@@ -11,9 +11,9 @@ logger.setLevel(logging.INFO)
 
 def handler(event, context):
     try:
-        secret = get_secret()
-        sec2 = secret[0]
-        print(secret[1])
+        my_secret = get_secret()
+        sec2 = my_secret[0]
+        print(my_secret[1])
         logger.info(sec2["dbname"])
     except ClientError as e:
         logger.info("ERROR: Unexpected error: Could not auth.")

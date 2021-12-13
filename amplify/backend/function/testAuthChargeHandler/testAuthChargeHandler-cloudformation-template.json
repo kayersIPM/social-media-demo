@@ -78,7 +78,7 @@
             "Arn"
           ]
         },
-        "Runtime": "python3.8",
+        "Runtime": "python3.7",
         "Layers": [
           "arn:aws:lambda:us-west-2:461354986992:layer:pyodbc_layer:1"
         ],
