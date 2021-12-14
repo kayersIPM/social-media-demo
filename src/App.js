@@ -52,33 +52,37 @@ function App() {
      return API.post(apiName, path, myInit);
    }
    const getCharges = async () => {
-    let r = await postData()
-    console.log(r)
-    if(r) {
-      let fn, mn, ln, bday = ''
-      let a = r[0].split("', '")
-      console.log(a)
-      fn = a[1]
-      mn = a[2].split("', ")[0]
-      let bday1 = a[2].split("', ")[1].split(", '")[0].split(',')
-      bday = bday1[1] + '/' + bday1[2].replace(')', '') + '/' + bday1[0].split('(')[1]
-      let b = a[0].split(', ')
-      console.log(b)
-      ln = b[2].replace("'", "")
-      let c = b[1].split("'")
-      console.log(c)
-      setCharges(c[1])
-      if(currentUser){
-        if(!currentUser.attributes["custom:fullname"] ) { 
-          currentUser.attributes["custom:fullname"]= fn + ' ' + mn + ' ' + ln
-          currentUser.attributes['custom:bday']= bday
-         
-          setCurrentUser(await Auth.updateUserAttributes(currentUser, {
-            ["custom:fullname"]: fn + ' ' + mn + ' ' + ln,
-            ['custom:bday']: bday
-          }))
+     try {
+      let r = await postData()
+      console.log(r)
+      if(r) {
+        let fn, mn, ln, bday = ''
+        let a = r[0].split("', '")
+        console.log(a)
+        fn = a[1]
+        mn = a[2].split("', ")[0]
+        let bday1 = a[2].split("', ")[1].split(", '")[0].split(',')
+        bday = bday1[1] + '/' + bday1[2].replace(')', '') + '/' + bday1[0].split('(')[1]
+        let b = a[0].split(', ')
+        console.log(b)
+        ln = b[2].replace("'", "")
+        let c = b[1].split("'")
+        console.log(c)
+        setCharges(c[1])
+        if(currentUser){
+          if(!currentUser.attributes["custom:fullname"] ) { 
+            currentUser.attributes["custom:fullname"]= fn + ' ' + mn + ' ' + ln
+            currentUser.attributes['custom:bday']= bday
+          
+            setCurrentUser(await Auth.updateUserAttributes(currentUser, {
+              ["custom:fullname"]: fn + ' ' + mn + ' ' + ln,
+              ['custom:bday']: bday
+            }))
+          }
         }
       }
+    } catch(e) {
+      alert('error' + e)
     }
    }
    
