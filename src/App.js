@@ -74,10 +74,11 @@ function App() {
             currentUser.attributes["custom:fullname"]= fn + ' ' + mn + ' ' + ln
             currentUser.attributes['custom:bday']= bday
           
-            setCurrentUser(await Auth.updateUserAttributes(currentUser, {
+            let userN = await Auth.updateUserAttributes(currentUser, {
               ["custom:fullname"]: fn + ' ' + mn + ' ' + ln,
               ['custom:bday']: bday
-            }))
+            })
+            setCurrentUser(userN)
           }
         }
       }
