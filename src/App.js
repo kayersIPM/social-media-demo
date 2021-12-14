@@ -34,7 +34,9 @@ function App() {
   //   }
        
   //  }
+
    const postData = async () => {
+     console.log('post')
      const currentUser = await Auth.currentAuthenticatedUser();
      const apiName = 'testAuthChargeAPI';
      const path = '/charge';
@@ -49,6 +51,37 @@ function App() {
      
      return API.post(apiName, path, myInit);
    }
+   const getCharges = async () => {
+    let r = await postData()
+    console.log(r)
+    if(r) {
+      let fn, mn, ln, bday = ''
+      let a = r[0].split("', '")
+      console.log(a)
+      fn = a[1]
+      mn = a[2].split("', ")[0]
+      let bday1 = a[2].split("', ")[1].split(", '")[0].split(',')
+      bday = bday1[1] + '/' + bday1[2].replace(')', '') + '/' + bday1[0].split('(')[1]
+      let b = a[0].split(', ')
+      console.log(b)
+      ln = b[2].replace("'", "")
+      let c = b[1].split("'")
+      console.log(c)
+      setCharges(c[1])
+      if(currentUser){
+        if(!currentUser.attributes["custom:fullname"] ) { 
+          currentUser.attributes["custom:fullname"]= fn + ' ' + mn + ' ' + ln
+          currentUser.attributes['custom:bday']= bday
+         
+          setCurrentUser(await Auth.updateUserAttributes(currentUser, {
+            ["custom:fullname"]: fn + ' ' + mn + ' ' + ln,
+            ['custom:bday']: bday
+          }))
+        }
+      }
+    }
+   }
+   
   // useEffect(async () => {
   //   checkLoginState()
   //   const loadPosts = async () => {
@@ -64,13 +97,13 @@ function App() {
   // }, [])
   useEffect(() => {
     checkLoginState()
+    getCharges()
     Hub.listen('auth', async(data) => {
       const { payload } = data
       console.log('A new auth event has happened: ', data)
        if (payload.event === 'signIn') {
          console.log('a user has signed in!')
         //  checkLoginState()
-          setCharges(await postData())
           Hub.remove('auth')
        }
        if (payload.event === 'signOut') {
@@ -103,10 +136,10 @@ function App() {
           <ProfileView currentUser={currentUser}/>
         }
       </nav>
-      { currentUser && 
+      { currentUser && charges &&
       <div className="posts">
         <h1>Total Charge Due</h1>
-        {charges.map(charge => <ChargeView charge={charge} currentUser={currentUser}/>)}
+        {<ChargeView charge={charges} currentUser={currentUser}/>}
       </div> }
       {showAuthenticator && 
         <LoginPopup

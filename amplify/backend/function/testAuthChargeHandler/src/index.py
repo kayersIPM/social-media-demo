@@ -36,26 +36,37 @@ def handler(event, context):
         ptn = json.loads(event['body'])['ptnum'].upper()
         logger.info(ptn)
         logger.info('attempting to connect...')
-        print(creds)
+        # print(creds)
         conn = pyodbc.connect(creds)
         cursor = conn.cursor()
         logger.info('connected')
-        resLst = []
-        q = "SELECT patient_no, lastname, firstname, middlename, bdate, email FROM [imsreports].[patient_master] WHERE active = 'Y' AND patient_no ='" + ptn + "'"
-        logger.info(q)
-        print(q)
+        q = "SELECT patient_no, patient_balance, lastname, firstname, middlename, bdate, email FROM [imsreports].[patient_master] WHERE active = 'Y' AND patient_no = '" + ptn + "'"
         cursor.execute(q)
-        for row in cursor:
-            logger.info(row)
-            resLst.append(row)
+        # rows = cursor.fetchall()
+        # resLst = ()
+        # for row in rows:
+        #     if not row:
+        #         break;
+        #     t = (row[0], row[1], row[2], row[3], row[4], row[5], row[6])
+        #     print(t)
+        #     print(row[0], row[1], row[2], row[3], row[4], row[5], row[6])
+        #     resLst.append(t)
+        # row = cursor.fetchone()
+        # if row:
+        #     print(row)
+        #     resLst = row
+        j = list(cursor.fetchall())
+        print('callback')
+        logger.info('backcall')
         return {
             'statusCode': 200,
             'headers': {
+                "content-type":"application/json",
                 'Access-Control-Allow-Headers': '*',
                 'Access-Control-Allow-Origin': '*',
                 'Access-Control-Allow-Methods': 'OPTIONS,POST,GET'
             },
-            'body': json.dumps(resLst)
+            'body': json.dumps(j, indent=4, sort_keys=True, default=str)
         } 
     except:
         logger.info("ERROR: Unexpected error: Could not complete query.")

@@ -2,11 +2,6 @@
   "AWSTemplateFormatVersion": "2010-09-09",
   "Description": "{\"createdOn\":\"Windows\",\"createdBy\":\"Amplify\",\"createdWith\":\"7.6.2\",\"stackType\":\"function-Lambda\",\"metadata\":{}}",
   "Parameters": {
-    "CloudWatchRule": {
-      "Type": "String",
-      "Default": "NONE",
-      "Description": " Schedule Expression"
-    },
     "deploymentBucketName": {
       "Type": "String"
     },
@@ -15,6 +10,14 @@
     },
     "s3Key": {
       "Type": "String"
+    },
+    "apitestAuthChargeAPIApiName": {
+      "Type": "String",
+      "Default": "apitestAuthChargeAPIApiName"
+    },
+    "apitestAuthChargeAPIApiId": {
+      "Type": "String",
+      "Default": "apitestAuthChargeAPIApiId"
     }
   },
   "Conditions": {
@@ -69,6 +72,12 @@
             },
             "REGION": {
               "Ref": "AWS::Region"
+            },
+            "API_TESTAUTHCHARGEAPI_APINAME": {
+              "Ref": "apitestAuthChargeAPIApiName"
+            },
+            "API_TESTAUTHCHARGEAPI_APIID": {
+              "Ref": "apitestAuthChargeAPIApiId"
             }
           }
         },
@@ -85,7 +94,7 @@
         "Timeout": 69,
         "VpcConfig": {
           "SecurityGroupIds": [
-            "sg-096be95088b9dc3cc"
+            "sg-0e851a6411449adc6"
           ],
           "SubnetIds": [
             "subnet-0ad505b000f2f91ad",
@@ -134,9 +143,6 @@
       }
     },
     "lambdaexecutionpolicy": {
-      "DependsOn": [
-        "LambdaExecutionRole"
-      ],
       "Type": "AWS::IAM::Policy",
       "Properties": {
         "PolicyName": "lambda-execution-policy",
@@ -149,12 +155,42 @@
           "Version": "2012-10-17",
           "Statement": [
             {
+              "Sid": "VisualEditor0",
+              "Action": [
+                "ec2:DescribeAvailabilityZones",
+                "ec2:DescribeSecurityGroups",
+                "ec2:DescribeSubnets",
+                "ec2:DescribeNetworkInterfaces",
+                "ec2:DescribeVpcs",
+                "ec2:CreateNetworkInterface",
+                "ec2:CreateNetworkInterfacePermission",
+                "ec2:DeleteNetworkInterface",
+                "ec2:DeleteNetworkInterfacePermission",
+                "secretsmanager:ListSecrets"
+              ],
+              "Effect": "Allow",
+              "Resource": "*"
+            },
+            {
+              "Sid": "VisualEditor1",
+              "Effect": "Allow",
+              "Action": [
+                "secretsmanager:GetResourcePolicy",
+                "secretsmanager:GetSecretValue",
+                "secretsmanager:DescribeSecret",
+                "secretsmanager:ListSecretVersionIds"
+              ],
+              "Resource": [
+                "arn:aws:secretsmanager:us-west-2:461354986992:secret:rds_sql_server_pyodbc-iEWRKW"
+              ]
+            },
+            {
+              "Sid": "VisualEditor2",
               "Effect": "Allow",
               "Action": [
                 "logs:CreateLogGroup",
                 "logs:CreateLogStream",
-                "logs:PutLogEvents",
-                "secretsmanager:GetSecretValue"
+                "logs:PutLogEvents"
               ],
               "Resource": [
                 {
@@ -172,33 +208,8 @@
                       }
                     }
                   ]
-                },
-                {
-                  "Fn::Sub": [
-                    "arn:aws:logs:${region}:${account}:secret:rds_sql_server_pyodbc-iEWRKW",
-                    {
-                      "region": {
-                        "Ref": "AWS::Region"
-                      },
-                      "account": {
-                        "Ref": "AWS::AccountId"
-                      }
-                    }
-                  ]
                 }
               ]
-            },
-            {
-              "Effect": "Allow",
-              "Action": [
-                "ec2:DescribeNetworkInterfaces",
-                "ec2:CreateNetworkInterface",
-                "ec2:DeleteNetworkInterface",
-                "ec2:DescribeInstances",
-                "ec2:AttachNetworkInterface",
-                "ec2:DescribeSecurityGroups"
-              ],
-              "Resource": "*"
             }
           ]
         }
