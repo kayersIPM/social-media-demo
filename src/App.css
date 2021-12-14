@@ -2,7 +2,7 @@
   --primary: #EF7B45;
   --secondary: #CDEDF6;
   --tertiary: #5EB1BF;
-  --dark: #042A2B;
+  --dark: #002d5d;
   --amplify-primary-color: var(--dark);
 }
 
@@ -132,7 +132,7 @@ h1 {
   right: 0;
   top: 0;
   right: 0;
-  background-color: var(--dark);
+  background-color: #7ba0c4;
 }
 
 .close-login {
