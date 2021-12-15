@@ -14,13 +14,18 @@ function App() {
   const [charges, setCharges] = useState([])
   const [currentUser, setCurrentUser] = useState()
   const [showAuthenticator, setShowAuthenticator] = useState(false)
-
+  const [working, setWorking] = useState(false)
+  
   const checkLoginState = async () => {
     try {
       const currentUser = await Auth.currentAuthenticatedUser()
       if (currentUser) {
         setCurrentUser(currentUser)
         setShowAuthenticator(false)
+        if(!working) {
+          setWorking(true)
+          getCharges()
+        }
       }
     } catch (e) {
       setCurrentUser(null)
@@ -36,8 +41,17 @@ function App() {
   //  }
 
    const postData = async () => {
+    if(working) {
+      console.log('working')
+     return
+   }
      console.log('post')
      const currentUser = await Auth.currentAuthenticatedUser();
+    if(!currentUser?.attributes?.preferred_username) {
+      console.log('no username?')
+      setWorking(false)
+      return
+    }
      const apiName = 'testAuthChargeAPI';
      const path = '/charge';
      const myInit = { // OPTIONAL
@@ -53,29 +67,52 @@ function App() {
    }
    const getCharges = async () => {
      try {
+       if(working) {
+         console.log('working')
+        return
+      }
       let r = await postData()
       console.log(r)
       if(r) {
+        setWorking(false)
         let fn, mn, ln, bday = ''
-        let a = r[0].split("', '")
+        //for first test 
+        // let a = r[0].split("', '")
+        // console.log(a)
+        // fn = a[1]
+        // mn = a[2].split("', ")[0]
+        // let bday1 = a[2].split("', ")[1].split(", '")[0].split(',')
+        // bday = bday1[1] + '/' + bday1[2].replace(')', '') + '/' + bday1[0].split('(')[1]
+        // let b = a[0].split(', ')
+        // console.log(b)
+        // ln = b[2].replace("'", "")
+        // let c = b[1].split("'")
+        // console.log(c)
+        if(!r[0]) return
+        let a = r[0].split('datetime.date(')
         console.log(a)
-        fn = a[1]
-        mn = a[2].split("', ")[0]
-        let bday1 = a[2].split("', ")[1].split(", '")[0].split(',')
-        bday = bday1[1] + '/' + bday1[2].replace(')', '') + '/' + bday1[0].split('(')[1]
+        //0 - ptnum charge ln fn md
+        //1 yr m d email
         let b = a[0].split(', ')
         console.log(b)
-        ln = b[2].replace("'", "")
-        let c = b[1].split("'")
+        let charge = b[1].split("'")[1]
+        console.log('charge', charge)
+        let c = a[1].split(', ')
         console.log(c)
-        setCharges(c[1])
+        bday = c[1] + '/' + c[2].replace(')', '') + '/' + c[0]
+        ln = b[2].replaceAll("'", '')
+        fn = b[3].replaceAll("'", "")
+        //setCharges(c[1])
+        setCharges(charge)
+
         if(currentUser){
           if(!currentUser.attributes["custom:fullname"] ) { 
-            currentUser.attributes["custom:fullname"]= fn + ' ' + mn + ' ' + ln
+           
+            currentUser.attributes["custom:fullname"]= fn + ' '  + ln
             currentUser.attributes['custom:bday']= bday
-          
+            
             let userN = await Auth.updateUserAttributes(currentUser, {
-              ["custom:fullname"]: fn + ' ' + mn + ' ' + ln,
+              ["custom:fullname"]: fn + ' ' + ln,
               ['custom:bday']: bday
             })
             setCurrentUser(userN)
@@ -84,6 +121,7 @@ function App() {
       }
     } catch(e) {
       alert('error' + e)
+      setWorking(false)
     }
    }
    
@@ -100,21 +138,9 @@ function App() {
 
   //   return () => subscription.unsubscribe()
   // }, [])
-  useEffect(() => {
+  useEffect( () => {
     checkLoginState()
-    getCharges()
-    Hub.listen('auth', async(data) => {
-      const { payload } = data
-      console.log('A new auth event has happened: ', data)
-       if (payload.event === 'signIn') {
-         console.log('a user has signed in!')
-        //  checkLoginState()
-          Hub.remove('auth')
-       }
-       if (payload.event === 'signOut') {
-         console.log('a user has signed out!')
-       }
-    })
+    // getCharges()
   }, [])
   
 
@@ -129,6 +155,7 @@ function App() {
           onLogout={async () => {
             await Auth.signOut()
             checkLoginState()
+            setCharges(null)
           }} />
         {currentUser &&
           // <button onClick={() => {
