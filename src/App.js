@@ -1,6 +1,6 @@
-import { DataStore, Auth, API, Hub } from 'aws-amplify';
-import { Post } from './models'
-import PostView from './PostView';
+import { Auth, API } from 'aws-amplify';
+// import { Post } from './models'
+// import PostView from './PostView';
 import ChargeView from './ChargeView';
 import { useEffect, useState } from 'react';
 import './App.css';
@@ -41,17 +41,16 @@ function App() {
   //  }
 
    const postData = async () => {
-    if(working) {
-      console.log('working')
-     return
-   }
-     console.log('post')
-     const currentUser = await Auth.currentAuthenticatedUser();
-    if(!currentUser?.attributes?.preferred_username) {
-      console.log('no username?')
-      setWorking(false)
-      return
-    }
+     setWorking(true)
+      const currentUser = await Auth.currentAuthenticatedUser()
+      if (currentUser) {
+        setCurrentUser(currentUser)
+      }
+      else {
+        console.log('no username?')
+        return
+      }
+      console.log('post')
      const apiName = 'testAuthChargeAPI';
      const path = '/charge';
      const myInit = { // OPTIONAL
@@ -120,7 +119,7 @@ function App() {
         }
       }
     } catch(e) {
-      alert('error' + e)
+      console.log('error' + e)
       setWorking(false)
     }
    }
