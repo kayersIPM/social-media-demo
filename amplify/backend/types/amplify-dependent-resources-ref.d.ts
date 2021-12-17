@@ -1,4 +1,11 @@
 export type AmplifyDependentResourcesAttributes = {
+    "api": {
+        "testAuthChargeAPI": {
+            "RootUrl": "string",
+            "ApiName": "string",
+            "ApiId": "string"
+        }
+    },
     "auth": {
         "testAuth": {
             "IdentityPoolId": "string",
@@ -17,13 +24,6 @@ export type AmplifyDependentResourcesAttributes = {
             "Arn": "string",
             "Region": "string",
             "LambdaExecutionRole": "string"
-        }
-    },
-    "api": {
-        "testAuthChargeAPI": {
-            "RootUrl": "string",
-            "ApiName": "string",
-            "ApiId": "string"
         }
     }
 }

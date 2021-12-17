@@ -6,4 +6,8 @@ export function override(resources: AmplifyAuthCognitoStackTemplate) {
         }
     resources.userPool.emailVerificationSubject= "Verify your email id for IPM Payment Portal",
     resources.userPool.emailVerificationMessage= "Please click the link below to verify your email address. {####}"
+    resources.userPool.autoVerifiedAttributes = ["email"]
+    resources.userPool.adminCreateUserConfig = {
+        allowAdminCreateUserOnly: true
+    }
 }

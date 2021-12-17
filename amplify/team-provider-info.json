@@ -81,5 +81,30 @@
         }
       }
     }
+  },
+  "devui": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-socialmediademo-devui-173745-authRole",
+      "UnauthRoleArn": "arn:aws:iam::461354986992:role/amplify-socialmediademo-devui-173745-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::461354986992:role/amplify-socialmediademo-devui-173745-authRole",
+      "Region": "us-west-2",
+      "DeploymentBucketName": "amplify-socialmediademo-devui-173745-deployment",
+      "UnauthRoleName": "amplify-socialmediademo-devui-173745-unauthRole",
+      "StackName": "amplify-socialmediademo-devui-173745",
+      "StackId": "arn:aws:cloudformation:us-west-2:461354986992:stack/amplify-socialmediademo-devui-173745/f346cb60-5ed9-11ec-8efc-02ec7f4551cd",
+      "AmplifyAppId": "dr30j0xno2ez7",
+      "APIGatewayAuthURL": "https://s3.amazonaws.com/amplify-socialmediademo-devui-173745-deployment/amplify-cfn-templates/api/APIGatewayAuthStack.json"
+    },
+    "categories": {
+      "function": {
+        "testAuthChargeHandler": {
+          "deploymentBucketName": "amplify-socialmediademo-devui-173745-deployment",
+          "s3Key": "amplify-builds/testAuthChargeHandler-35593757514d70337278-build.zip"
+        }
+      },
+      "auth": {
+        "testAuth": {}
+      }
+    }
   }
 }
