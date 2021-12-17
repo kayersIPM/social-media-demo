@@ -1,4 +1,4 @@
-import { AmplifyAuthenticator, AmplifySignIn } from '@aws-amplify/ui-react'
+import { AmplifyAuthenticator, AmplifySignIn, AmplifyVerifyContact} from '@aws-amplify/ui-react'
 
 function LoginPopup({onAuthStateChange, onCancel}) {
     return <div className="authenticator">
@@ -9,6 +9,8 @@ function LoginPopup({onAuthStateChange, onCancel}) {
             slot="sign-in"
             hideSignUp='true'
         ></AmplifySignIn>
+        <AmplifyVerifyContact>
+        </AmplifyVerifyContact>
         </AmplifyAuthenticator>
     </div>
 }
